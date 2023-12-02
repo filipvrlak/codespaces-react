@@ -25,14 +25,10 @@ jobs:
         run: npm run build
 
       - name: Log in to Docker Registry
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login mcr.microsoft.com -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Build and Push Docker Image
-        run: |
-          docker build -t mcr.microsoft.com/your-image-name:latest .
-          docker push mcr.microsoft.com/your-image-name:latest
+        run: docker push your-image-name:latest
 
       - name: Deploy to Production
-        run: |
-          # Add your deployment script or commands here
-          echo "Deploying to production..."
+        run: echo "Deploying to production..."
