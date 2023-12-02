@@ -1,3 +1,10 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -6,14 +13,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Build Docker Image
-        run: docker build -t your-image-name:latest .
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 14
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
 
       - name: Log in to Docker Registry
-        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login mcr.microsoft.com -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Push Docker Image to Registry
-        run: docker push your-image-name:latest
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t mcr.microsoft.com/your-image-name:latest .
+          docker push mcr.microsoft.com/your-image-name:latest
 
       - name: Deploy to Production
         run: |
