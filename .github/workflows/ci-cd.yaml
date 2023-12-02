@@ -31,7 +31,7 @@ jobs:
         run: docker build -t react-testing:latest .
 
       - name: Build and Push Docker Image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/react-testing:tagname
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/react-testing:latest
 
       - name: Deploy to Production
         run: echo "Deploying to production..."
